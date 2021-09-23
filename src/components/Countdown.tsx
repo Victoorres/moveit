@@ -5,27 +5,44 @@ import { useState, useEffect } from 'react';
 let countdownTimeout: NodeJS.Timeout;
 
 export function Countdown() {
+  /**
+   * States
+   */
   const [time, setTime] = useState(2);
   const [isActive, setIsActive] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
 
-  const minutes = Math.floor(time / 60);
+  /**
+   * Time variables
+   */
   const seconds = time % 60;
+  const minutes = Math.floor(time / 60);
 
+  /**
+   * Time position variables
+   */
+  const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('');
 
-  const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
-
+  /**
+   * Start countdown function
+   */
   function startCountdown(): void {
     setIsActive(true);
   }
 
+  /**
+   * Stop countdown function
+   */
   function resetCountdown(): void {
     clearTimeout(countdownTimeout);
     setIsActive(false);
     setTime(1500);
   }
 
+  /**
+   * Effects
+   */
   useEffect(() => {
     if (isActive && time > 0) {
       countdownTimeout = setTimeout(() => {
