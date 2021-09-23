@@ -1,61 +1,16 @@
+import { useContext } from 'react';
 import { BiAlarm, BiBadgeCheck, BiXCircle } from 'react-icons/bi';
+import { CountdownContext } from '../contexts/CountdownContext';
 import styles from '../styles/components/Countdown.module.css';
-import { useState, useEffect, useContext } from 'react';
-import { ChallengesContext } from '../contexts/ChallengesContext';
-
-let countdownTimeout: NodeJS.Timeout;
 
 export function Countdown() {
-  const { startNewChallenge } = useContext(ChallengesContext);
-  /**
-   * States
-   */
-  const [time, setTime] = useState(2);
-  const [isActive, setIsActive] = useState(false);
-  const [hasFinished, setHasFinished] = useState(false);
-
-  /**
-   * Time variables
-   */
-  const seconds = time % 60;
-  const minutes = Math.floor(time / 60);
+  const { hasFinished, seconds, minutes, isActive, resetCountdown, startCountdown } = useContext(CountdownContext);
 
   /**
    * Time position variables
    */
   const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('');
-
-  /**
-   * Start countdown function
-   */
-  function startCountdown(): void {
-    setIsActive(true);
-  }
-
-  /**
-   * Stop countdown function
-   */
-  function resetCountdown(): void {
-    clearTimeout(countdownTimeout);
-    setIsActive(false);
-    setTime(1500);
-  }
-
-  /**
-   * Effects
-   */
-  useEffect(() => {
-    if (isActive && time > 0) {
-      countdownTimeout = setTimeout(() => {
-        setTime(time - 1);
-      }, 1000);
-    } else if (isActive && time === 0) {
-      setHasFinished(true);
-      setIsActive(false);
-      startNewChallenge();
-    }
-  }, [isActive, time]);
 
   return (
     <div>
