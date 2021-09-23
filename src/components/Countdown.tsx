@@ -1,10 +1,12 @@
 import { BiAlarm, BiBadgeCheck, BiXCircle } from 'react-icons/bi';
 import styles from '../styles/components/Countdown.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ChallengesContext } from '../contexts/ChallengesContext';
 
 let countdownTimeout: NodeJS.Timeout;
 
 export function Countdown() {
+  const { startNewChallenge } = useContext(ChallengesContext);
   /**
    * States
    */
@@ -51,6 +53,7 @@ export function Countdown() {
     } else if (isActive && time === 0) {
       setHasFinished(true);
       setIsActive(false);
+      startNewChallenge();
     }
   }, [isActive, time]);
 
